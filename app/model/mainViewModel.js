@@ -3,11 +3,7 @@ Ext.define('SenchaNote.model.mainViewModel', {
     config : {
         fields: [
             {name: 'id', type: 'string'},
-            {name: 'volumeInfo', convert: 
-                function(value, record) {
-                    return value.title;
-                }
-            }
+            {name: 'volumeInfo', type: 'object'}
         ],
     }
 });

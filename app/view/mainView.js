@@ -23,7 +23,7 @@ Ext.define('SenchaNote.view.mainView',{
             loadingText: "Loading Books...",
             emptyText: "<div>No books found.</div>",
             onItemDisclosure: true,
-            itemTpl: '<div>{volumeInfo}</div>',
+            itemTpl: '<div>{volumeInfo.title}</div><span style="font-size: 15px">{volumeInfo.authors}</span>',
         },{  
             xtype:'toolbar',
             docked:'bottom',

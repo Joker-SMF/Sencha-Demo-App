@@ -23,6 +23,11 @@ Ext.define('SenchaNote.controller.mainViewController',{
     },
 
 	onSearchInputReceived : function(list, searchText) {
+        searchText = searchText.trim();
+        if(searchText == '') {
+            return;
+        }
+
 		var mainViewStore = Ext.getStore('mainViewStore');
 		mainViewStore.load({
 			url: 'https://www.googleapis.com/books/v1/volumes?q=' + searchText,
