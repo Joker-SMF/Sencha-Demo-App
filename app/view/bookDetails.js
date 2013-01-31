@@ -24,7 +24,7 @@ Ext.define("SenchaNote.view.bookDetails",{
             xtype: 'list',
             scrollable: true,
             styleHtmlContent: true,
-            itemTpl :'{volumeInfo.description}',
+            itemTpl :'{volumeInfo.volumeInfo.description}',
             store: 'bookDetailsStore',
         }],
         listeners: [{

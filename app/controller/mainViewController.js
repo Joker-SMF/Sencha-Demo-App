@@ -54,9 +54,17 @@ Ext.define('SenchaNote.controller.mainViewController',{
                 scope: this
             });
 		} else {
-            var hasBook = dataLocalStore.findExact('id', id);
+			var storeData = dataLocalStore.data.items;
+			hasBook = false;
 
-            if(hasBook == -1) {
+            for(var i=0; i< storeData.length; i++) {
+				if(storeData[i].data.volumeInfo.book_id === SenchaNote.app.currentBookId) {
+					hasBook = true;
+					break;
+				}
+			}
+
+            if(!hasBook) {
                 dataStore.on({
                     load: 'onStoreLoad',
                     scope: this
@@ -68,7 +76,7 @@ Ext.define('SenchaNote.controller.mainViewController',{
                     scope: this
                 });
             } else {
-                this.onStoreLoad(true);
+				this.onStoreLoad(true);
             }
 		}
     },
@@ -77,14 +85,30 @@ Ext.define('SenchaNote.controller.mainViewController',{
         status = (status == true) ? status : false;
         var dataStore = Ext.getStore('bookDetailsStore');
         var dataLocalStore = Ext.getStore('localBookDetailsStore');
-        if(!status) {
+
+		// http://www.sencha.com/forum/showthread.php?215424-how-to-set-id-field-manually
+		if(!status) {
             dataStore.each(function(item) {
-                dataLocalStore.add(item);
+				var data = {
+					volumeInfo:item.data.volumeInfo,
+					book_id: SenchaNote.app.currentBookId
+				};
+				dataLocalStore.add({"volumeInfo":data});
             });
         }
-
+		dataLocalStore.sync();
         dataStore.removeAll(true);
-        var hasBook = dataLocalStore.findExact('id', SenchaNote.app.currentBookId);        
+
+		var storeData = dataLocalStore.data.items;
+		if(storeData.length > 0) {
+			for(var i=0; i< storeData.length; i++) {
+				if(storeData[i].data.volumeInfo.book_id === SenchaNote.app.currentBookId) {
+					hasBook = i;
+					break;
+				}
+			}
+		}
+
         dataLocalStore.each(function(item, index) {
             if(index == hasBook) {
                 dataStore.add(item);    
